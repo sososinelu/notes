@@ -1,0 +1,692 @@
+<?php
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥 MySQL Dump 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+sudo mysqldump -u root live_bluemountain_portal > live_bluemountain_portal_`date '+%d-%m-%Y_%H-%M'`.sql
+
+sudo mysqldump --no-data -u root getlittleblue_test > getlittleblue_test_`date '+%d-%m-%Y_%H-%M'`.sql
+
+sudo mysql -u root EasyJetBigBlue < EasyJetBigBlue
+
+sudo mysqldump -u root --all-databases | gzip -9 > backup_`date '+%d-%m-%Y_%H-%M'`.sql.gz
+
+sudo mysql -u root -p < alldb.sql
+
+select * from employees where activated is NULL;
+
+update users, employees set users.active=1, employees.activated = now() where users.id = employees.user_id and employees.activated is NULL;
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥 cron to remove files/folders & backups 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+//----- cron to remove files/folders
+
+@hourly find /backup/mysql_dump/hourly/ -d -mmin +1440 -exec rm -rf {} \; && find /backup/mysql_dump/hourly/ -type d -empty -exec rmdir {} \;
+@daily find /backup/mysql_dump/daily/ -d -mmin +10080 -exec rm -fr {} \; && find /backup/mysql_dump/daily/ -type d -empty -exec rmdir {} \;
+
+
+//----- cron to run the backups
+@hourly /home/nudge.sorin/mysqldump_hourly.sh
+@midnight /home/nudge.sorin/mysqldump_daily.sh
+
+! /bin/bash
+
+TIMESTAMP=$(date +"%F_%H-%M")
+BACKUP_DIR="/backup/mysql_dump/daily/$TIMESTAMP"
+#MYSQL_USER="nudge.sorin"
+#MYSQL=/usr/bin/mysql
+#MYSQL_PASSWORD="pylHRW2fGX"
+#MYSQLDUMP=/usr/bin/mysqldump
+
+mkdir -p "$BACKUP_DIR/"
+
+databases=`mysql --defaults-file=/root/.my.cnf -e "SHOW DATABASES;" | grep -Ev "(Database|information_schema|performance_schema)"`
+
+for db in $databases; do
+mysqldump --defaults-file=/root/.my.cnf --databases $db | gzip > "$BACKUP_DIR/$dbcd ../.gz"
+done
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥 mysql Search/Replace 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+update employees set salary = replace(salary, '?', '') where created like '2015-05-15%';
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥 mysql Select based on another field 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+select count(*) from employees where employees.user_id IN (select users.id from users where company='ADMIN');
+
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥 remote mysqldump 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+ssh -f -L3310:localhost:3306 nudge.sorin@10.181.105.132 -N
+
+mysqldump -P 3310 -h 127.0.0.1 -u develop_user -p EasyJetBigBlue
+
+mysqldump --defaults-file=/var/www/vhosts/db_backups/.my.cnf -P 3306 -h 10.181.105.132 EasyJetBigBlue > db_backup.sql --skip-ssl
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥 grant user to database 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+GRANT ALL ON des_db.* TO 'des_db_user'@'10.181.134.193' IDENTIFIED BY '3f3021806e4b811ddaf8bbda4d98ce9';
+FLUSH PRIVILEGES;
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥 PPF 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+mysql -u ppf_db_user -p -h 3f3419ff3c5bce4d6bbdf3dde021be91f009af5c.rackspaceclouddb.com
+
+sudo mysqldump -u ppf_db_user -p -h 3f3419ff3c5bce4d6bbdf3dde021be91f009af5c.rackspaceclouddb.com ppf_staging_db > ppf_staging_db_`date '+%d-%m-%Y_%H-%M'`.sql
+
+sudo mysql -u ppf_db_user -p -h 3f3419ff3c5bce4d6bbdf3dde021be91f009af5c.rackspaceclouddb.com ppf_staging_db < ppf_dev.sql
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥 DES 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+Export UAT DB:
+sudo mysqldump -u root -p wordpress > des_db_`date '+%d-%m-%Y_%H-%M'`.sql
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+Import Live DB:
+sudo mysql des_db < des_db.sql
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+Compress wp-content/uploads folder:
+sudo tar -cvzf uploads.tar.gz wp-content/uploads
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+Search and replace:
+http://des.nudgeclients.co.uk
+https://des.mod.uk
+
+http:\\/\\/des.nudgeclients.co.uk
+https:\\/\\/des.mod.uk
+
+http%3A%2F%2Fdes.nudgeclients.co.uk
+https://des.mod.uk
+
+des.nudgeclients.co.uk
+des.mod.uk
+
+http://des.mod.uk
+https://des.mod.uk
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+Webserver:
+146.177.40.176
+192.168.184.176
+10.149.110.98
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+Database server:
+146.177.40.177
+192.168.183.177
+10.149.110.66
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+GRANT ALL ON danone_careers.* TO 'des_db_user'@'192.168.184.176' IDENTIFIED BY '3f3021806e4b811ddaf8bbda4d98ce9';
+FLUSH PRIVILEGES;
+
+
+show grants for 'wordpressuser'@'web_server_IP';
+
+
+mysql -u des_db_user -p -h 192.168.183.177
+
+
+
+DROP USER 'des_db_user'@'10.149.110.98';
+
+update mysql.users set Host = 192.168.184.176 where Host = 10.149.110.66;
+flush privileges;
+
+SELECT User,Host FROM mysql.user;
+
+
+
+AuthType Basic
+AuthName "Protected"
+AuthUserFile "/var/www/des.htpasswd"
+require valid-user
+AuthType Basic
+
+
+des:$apr1$wfx0W7bA$0uMAZXK4/eT2lw536sjC1.
+
+Prod htaccess:
+des
+JrFgWzpBct17EyZ7PPeQ
+
+
+RewriteEngine On 
+RewriteCond %{SERVER_PORT} 80
+RewriteCond %{HTTP_HOST} ^(www\.)?des\.mod.uk
+RewriteRule ^(.*)$ https://www.des.mod.uk/$1 [R,L]
+
+
+git cherry-pick c61296413b2b1cfd8286a6b70bb7c3134153fdfa -X theirs
+
+
+
+sudo vi /etc/httpd/conf.d/ppf.nudgeclients.co.uk.conf
+
+
+composer create-project drupal-composer/drupal-project:8.x-dev roche-fphi --stability dev --no-interaction
+
+
+sudo mysql -u root -p fxpludev_drupal < FalmouthExeterPlus-2018-08-23T11-42-51.mysql.gz
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+roche_fphi
+
+
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/pki/tls/certs/localhost.key -out /etc/pki/tls/certs/localhost.crt
+
+roche-fphi.nudgestaging.co.uk
+
+developers@nudgedigital.co.uk
+
+
+/etc/letsencrypt/live/roche-fphi.nudgestaging.co.uk/fullchain.pem 
+
+/etc/letsencrypt/live/roche-fphi.nudgestaging.co.uk/privkey.pem
+
+sudo docker cp -L 8bf2424aa6ff:/etc/letsencrypt/live/roche-fphi.nudgestaging.co.uk/cert.pem ./
+sudo docker cp -L 8bf2424aa6ff:/etc/letsencrypt/live/roche-fphi.nudgestaging.co.uk/chain.pem ./
+sudo docker cp -L 8bf2424aa6ff:/etc/letsencrypt/live/roche-fphi.nudgestaging.co.uk/fullchain.pem ./
+sudo docker cp -L 8bf2424aa6ff:/etc/letsencrypt/live/roche-fphi.nudgestaging.co.uk/privkey.pem ./
+
+
+cert.pem -> ../../archive/roche-fphi.nudgestaging.co.uk/cert1.pem
+chain.pem -> ../../archive/roche-fphi.nudgestaging.co.uk/chain1.pem
+fullchain.pem -> ../../archive/roche-fphi.nudgestaging.co.uk/fullchain1.pem
+privkey.pem -> ../../archive/roche-fphi.nudgestaging.co.uk/privkey1.pem
+
+
+SSLCertificateFile      /etc/ssl/www/certificate.crt
+            SSLCertificateKeyFile /etc/ssl/www/private.key
+
+docker exec -it roche-fphi_webserver_1 /bin/bash
+
+
+
+sudo service apache2 restart
+
+sudo apache2 -t -D DUMP_VHOSTS
+
+
+scp -C -i ./RocheStaging.pem -r /home/ec2-user/roche-fphi/docker/webserver/certs ./
+
+Listen 192.168.33.10:80
+
+sudo apt install php7.2-common
+sudo apt install php-7.2-cli
+sudo apt install php7.2-mongodb
+sudo apt install php-pear
+sudo apt install php7.2-dev
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥 Mongo DB 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+[
+    'name' => 'gm_post'
+],
+[
+    'name' => 'gm_pre'
+],
+[
+    'name' => 'gm_system'
+],
+
+mongo ds023858-a1.qfb27.fleet.mlab.com:23858/<dbname> -u <dbuser> -p <dbpassword>
+
+
+mongodump -h ds023858-a1.qfb27.fleet.mlab.com:23858 -d gm_system -u ssecan -p Uwz8Py31heSQjF -o gm-dev_$(date +%Y-%m-%d)
+
+mongodump -h ds023858-a1.qfb27.fleet.mlab.com:23858 -d gm_pre -u ssecan -p Uwz8Py31heSQjF -o gm-dev_$(date +%Y-%m-%d)
+
+mongodump -h ds023858-a1.qfb27.fleet.mlab.com:23858 -d gm_post -u ssecan -p Uwz8Py31heSQjF -o gm-dev_$(date +%Y-%m-%d)
+
+mongorestore -h "localhost:27017" --drop -d gm_system ./gm_system
+mongorestore -h "localhost:27017" --drop -d gm_pre ./gm_pre
+mongorestore -h "localhost:27017" --drop -d gm_post ./gm_post
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+Swagger api documentation
+
+/api/v1
+
+Advance search > mongo aggregation
+
+http://dev.grademaker.com
+
+
+AB - awarding body
+
+Tops admin
+Super admin
+
+heck@all.com
+Password123
+
+sudo apt install php7.0-cli php7.0-common php7.0-json php7.0-opcache php7.0-mbstring php7.0-mcrypt php.7.0-zip
+
+
+./node_modules/.bin/gulp build-dev ./node_modules/.bin/gulp watch-dev
+
+// Delivery
+Office + floor + grademaker address
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+// Releases page
+
+# Permissions
+CRUD Admin view - TOPS Admin and Config
+View - authenticated users
+
+# API endpoints
+- Add - POST
+/api/v1/releases
+
+- List - GET
+/api/v1/releases
+
+- Get by ID - GET
+/api/v1/releases/{id}
+
+- Update - PUT
+/api/v1/releases/{id}
+
+- Delete - DELETE
+/api/v1/releases/{id}
+
+# Database
+# Create a model and run molequent commands to interact with the database
+- id
+- release number
+- title
+- description
+- release date
+- last updated
+- created
+
+# ReleasesPageController
+# app/Http/Controllers/Api/ReleasesController
+- listAll
+- get
+- add
+- update
+- delete
+
+# Constraints
+- Images can be uploaded to the description field using tinyMCE. (needs clarification)
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+{title: 'Asset brief'}
+
+
+{_id: ObjectId('5c70224e3bd2985bca62de64')}
+
+5c6fe9573bd2982c0b1f6614
+
+
+
+$workflow = Workflow::find($workflowId);
+            $workflow->update($data);
+
+
+                    {
+            "type": "chrome",
+            "request": "attach",
+            "name": "Attach to Chrome",
+            "port": 9222,
+            "urlFilter": "http://local.grademaker.com/*",
+            "webRoot": "${workspaceFolder}"
+        }
+
+
+New filters for item search: 1a05c41ab917017a6b98db43479b188f5bf08c40
+
+
+case 'asset_type':
+case 'asset_type_not':
+	var assetTypeValue = $scope.customFilters.items.asset_type.values[data[prop]];
+	var operator = prop === 'asset_type' ? 'is' : 'is_not';
+	transformedCriteria.customFilters.push({
+	  name: authoringSearchService.getCriteriaLabel('asset_type', operator, assetTypeValue),
+	  data: {
+	    key: 'asset_type',
+	    operator: operator,
+	    value: assetTypeValue,
+	  }
+	});
+	$scope.customFilters.items.asset_type.used = true;
+break;
+
+
+
+
+http://local.grademaker.com/admin/awarding-bodies/languages
+
+http://local.grademaker.com/api/v1/admin/awardingbody/56f1321fcc616ec31b3c6d0b?awardingbody_id=56f1321fcc616ec31b3c6d0b
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+Language variants JS:
+
+Done - Add new story to PT. 
+
+Done - Update the initial story with the fact that the settings are not stored in the database but in config files (Jim asked). - done
+
+Done - Add the awarding body language selection/variant to an API call and store it local storage.
+
+Done - Set the locale in JS to the AB language and make sure the locale is being used by Lang.js
+
+Done - Set Lang.js to use the variant loaded from the AB
+
+Build command to separate the language/variant files in separate JSON files.
+
+Extend Lang.js to use the separate language json files.
+
+Add the new API call to the API documentation.
+
+
+
+app/Http/routes_api.php
+
+
+
+M@lam00t25
+
+ss/s23/163648759
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+use GradeMaker\Http\Repositories\AuthoringAccessRepository;
+
+AuthoringAccessRepository $authoringAccess,
+
+
+
+db.shipwrecks.find({$or: [{"watlev": "always dry"}, {"depth": 0}]}).count()
+
+boxOffice: [ { "country": "USA", "revenue": 228.4 },
+             { "country": "Australia", "revenue": 19.6 },
+             { "country": "UK", "revenue": 33.9 },
+             { "country": "Germany", "revenue": 16.2 },
+             { "country": "France", "revenue": 19.8 } ]
+
+db.movieDetails.find({"boxOffice.country": "Germany", "boxOffice.revenue": {$gt: 17}})
+
+db.movieDetails.find({"boxOffice.country": "Germany", "boxOffice.revenue": {$gt: 228}})
+
+use video
+martian = db.movieDetails.findOne({title: "The Martian"})
+martian
+delete martian._id;
+martian
+martian.boxOffice = [
+    {"country": "USA", "revenue": 228.4},
+    {"country": "Australia", "revenue": 19.6},
+    {"country": "UK", "revenue": 33.9},
+    {"country": "Germany", "revenue": 16.2},
+    {"country": "France", "revenue": 19.8}
+]
+db.movieDetails.insertOne(martian);
+
+db.movieDetails.find({boxOffice: {$elemMatch: {"country": "Germany", "revenue": {$gt: 17}}}})
+
+db.movieDetails.find({boxOffice: {$elemMatch: {"country": "Germany", "revenue": {$gt: 16}}}})
+
+
+db.scores.find({"results": 
+	{$elemMatch: 
+		{
+			"results": {$gte: 70}, 
+			"results": {$lt: 80}
+		}
+	}
+}).count()
+
+db.scores.find({$and: [{"results": {$gte: 70}},  {"results": {$lt: 80}}]}).count()
+
+
+db.trips.find({$and: [{"tripduration": null},  {"tripduration": {$exists: true}}]}).count()
+
+db.trips.find({"tripduration": null}).count()
+
+db.trips.find({"tripduration": {$exists: false}})
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+db.movies.find({$or: [{"cast": "Jack Nicholson"}, {"cast": "John Huston"}]}).count()
+
+db.movies.find(
+	{"viewerRating": {$gt: 7}},
+	{"mpaaRating": "R"}
+	).count()
+
+db.movies.find(
+	{
+		"cast": {$in: ["Jack Nicholson", "John Huston"]},
+		"viewerRating": {$gt: 7},
+		"mpaaRating": "R"
+	}
+	).count()
+
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+ss/s24/160854903
+
+Done - Load languages from the API.
+Done - User changes language on the homescreen.
+Done - Calls Angular Controller which sets cookie with user selected language.
+Done - Then refreshes the page.
+Done - The new language, is set in the Angular Controller, based on the cookie, on reload.
+Done - User logs in and the language set in the cookie is saved against his data.
+Done - The language set by the user has priority to the AB language (Laravel and JS).
+DOne - If the AB has a variant against the language preffered by the user that will be used.
+Done - Style the dropdown on the homepage.
+Done - If no cookie set English is the default language.
+Done - Set login screen/AB select/Forgotten password screens in that language.
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+ss/s24/164434334
+
+React lang commit: c53c4c64880f97775f85be532f80e839621a1824
+
+Separate lang files in multiple messages.js files (e.g. messages-en.js) using an artisan task.
+Load the messages file server side based on AB or user selection.
+
+head.blade.php
+
+<script src="/js/messages-{{ GmAuth::getLanguage() }}.js?v={{ Config::get('build.timestamp') }}"></script>
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+ss/s24/164896081
+
+Done - Import CSV file with language (Welsh).
+Done - Convert it to a readable array.
+Done - Export the current GM base language CSV file.
+Done - Import it.
+Done - Convert it to a readable array.
+Done - Compare the two files.
+Done - Get differences in a separate array.
+Export that array to a csv.
+Done - Remove the other used csv files.
+Done - Integrate the new command with the import command.
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+Codeception Migrate:
+
+Install java
+https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-ubuntu-18-04
+sudo apt install default-jre
+java -version
+
+sudo apt install default-jdk
+javac -version
+
+Run Selenium
+
+npm install -g selenium-standalone
+
+node_modules/.bin/selenium-standalone install
+
+node_modules/.bin/selenium-standalone start -- -port 4444
+
+Locally:
+
+seleniums
+
+selenium start -- -port 4444
+
+Run tests 
+
+./vendor/bin/codecept run --help
+
+./vendor/bin/codecept run acceptance tests/acceptance/SmokeTests/Workflows/ItemReviewerSendToReviewCest.php
+
+
+
+./vendor/bin/codecept run acceptance tests/acceptance/ItemCest.php
+
+
+./vendor/bin/codecept run api tests/api/Permissions/AssetManagerAccessCest.php
+
+
+	--debug for debug output
+	-vvvvvv adds verbosity
+
+
+Migrate:
+
+ /acceptance
+ /support
+ /api
+ /configuration files
+ 	/acceptance.suite.yml
+ 	/api.suite.yml
+
+
+
+  // $session = $this->mongo->gm_system->sessions
+        //     ->find(['user_id' => new \MongoDB\BSON\ObjectId('5c879a59e66e350922307be9')])->toArray();
+
+
+
+./vendor/bin/codecept run acceptance tests/acceptance/Authoring/UserCanDo/Asset/ItemSetterCanAddAndEditAssetCest.php
+
+
+http://local.grademaker.com/author/item/edit/59c2b0f8807b8378cc2c7594
+
+/**
+ * @skip
+ */
+
+
+./vendor/bin/codecept run acceptance tests/acceptance/Authoring/UserCanDo/Asset/ItemSetterCanAddAndEditAssetCest.php
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+ss/s27/165246761
+
+
+DONE - Add Archive menu item after Authoring - 
+DONE - Add Archive mega menu "Area where archived items are papers can be found"
+DONE - Display Archive menu items if Archive for AB enabled 
+DONE - Archive listing page - authoring UI with the following changes (new page)
+DONE 	- new route
+DONE 	- No LHS panel
+DONE 	- No create button
+DONE 	- Search status for item and paper set to archive
+DONE 	- Status option in advanced search for items and papers hidden (or read only)
+DONE - Any user with AB setting Archive on can search and view archive items
+DONE - User with authoring turned off (Edit AB > Components) - no access to /authoring#/items
+
+angular.element($0).scope()
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+ss/s27/165250729
+
+- Back button after viewing and archived item / paper takes back to archive list
+- Tops admins, Item and Paper approvers should still get the buttons, edit options and tabs that are hidden below
+Item
+- View item in read only
+- Duplicate and download buttons removed
+- Quick edit of title removed
+- Quick edit of information fields removed
+- Quick edit of item data removed (both in usage and item data tabs)
+- Version selection replaced with latest version label
+- Edit mapping removed
+- Tracking tab removed
+- Notes tab removed
+
+Paper
+- View paper in read only
+- Duplicate, download, upload and publish buttons removed
+- Quick edit of title removed
+- Version selection replaced with latest version label
+- Tracking tab removed
+- Notes tab removed
