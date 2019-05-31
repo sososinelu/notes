@@ -659,7 +659,7 @@ DONE 	- No LHS panel
 DONE 	- No create button
 DONE 	- Search status for item and paper set to archive
 DONE 	- Status option in advanced search for items and papers hidden (or read only)
-DONE - Any user with AB setting Archive on can search and view archive items
+DONE - Any user with AB setting Archive on can search and view archive items irrespective of their author permissions
 DONE - User with authoring turned off (Edit AB > Components) - no access to /authoring#/items
 
 angular.element($0).scope()
@@ -670,23 +670,39 @@ angular.element($0).scope()
 
 ss/s27/165250729
 
-- Back button after viewing and archived item / paper takes back to archive list
-- Tops admins, Item and Paper approvers should still get the buttons, edit options and tabs that are hidden below
+DONE - Back button after viewing and archived item / paper takes back to archive list
+DONE - Tops admins, Item and Paper approvers should still get the buttons, edit options and tabs that are hidden below
+DONE - List only items / papers for the SQ the user has access to
+
 Item
-- View item in read only
-- Duplicate and download buttons removed
-- Quick edit of title removed
-- Quick edit of information fields removed
-- Quick edit of item data removed (both in usage and item data tabs)
-- Version selection replaced with latest version label
-- Edit mapping removed
-- Tracking tab removed
-- Notes tab removed
+DONE - View item in read only
+DONE - Duplicate and download buttons removed
+DONE - Quick edit of title removed
+DONE - Quick edit of information fields removed
+DONE - Quick edit of item data removed (both in usage and item data tabs)
+DONE - Version selection replaced with latest version label
+DONE - Edit mapping removed
+DONE - Tracking tab removed
+DONE - Notes tab removed
 
 Paper
-- View paper in read only
-- Duplicate, download, upload and publish buttons removed
-- Quick edit of title removed
-- Version selection replaced with latest version label
-- Tracking tab removed
-- Notes tab removed
+DONE - View paper in read only
+DONE - Duplicate, download, upload and publish buttons removed
+DONE - Quick edit of title removed
+DONE - Version selection replaced with latest version label
+DONE - Tracking tab removed
+DONE - Notes tab removed
+
+
+
+,
+"AB_ITEM_APPROVER"
+
+
+"AB_ITEM_SETTER", 
+"AB_ITEM_REVIEWER",
+"AB_ITEM_APPROVER"
+
+
+,
+"AB_PAPER_APPROVER"
