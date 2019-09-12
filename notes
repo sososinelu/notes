@@ -603,8 +603,6 @@ Run tests
 
 ./vendor/bin/codecept run acceptance tests/acceptance/SmokeTests/Workflows/ItemReviewerSendToReviewCest.php
 
-
-
 ./vendor/bin/codecept run acceptance tests/acceptance/ItemCest.php
 
 
@@ -613,7 +611,6 @@ Run tests
 
 	--debug for debug output
 	-vvvvvv adds verbosity
-
 
 Migrate:
 
@@ -693,8 +690,6 @@ DONE - Version selection replaced with latest version label
 DONE - Tracking tab removed
 DONE - Notes tab removed
 
-
-
 ,
 "AB_ITEM_APPROVER"
 
@@ -703,6 +698,236 @@ DONE - Notes tab removed
 "AB_ITEM_REVIEWER",
 "AB_ITEM_APPROVER"
 
+"AB_PAPER_SETTER", 
 
 ,
 "AB_PAPER_APPROVER"
+
+AB_PAPER_SENIOR_APPROVER
+
+'FULL_ACCESS' => [
+    UserPermission::ITEM_SETTER,
+    UserPermission::ITEM_REVIEWER,
+    UserPermission::ITEM_APPROVER,
+    UserPermission::TYPESETTER,
+    UserPermission::ASSET_MANAGER
+],
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+ss/s28/166732391
+
+ss/archive/166732391
+
+AB_ARCHIVE_READER
+
+Pitkeathly, Item setter
+
+
+
+ngb/s29/#166354365
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+ss/s29/165993848
+
+./vendor/bin/codecept run acceptance tests/acceptance/Authoring/Duplicate/ReplaceItem/UserCantReplaceItemDuplicateInApprovedPaperCest.php
+
+'Do you want to unpublish this Workflow Template and set it back to private? It will mean that it will no longer be available to paper setters when they create a paper'
+
+
+'Do you want to unpublish this Workflow Templates and set them back to private? It will mean that they will no longer be available to paper setters when they create a paper'
+
+
+1ba70c15570d03f078a8dc598918b7ccd4d08559
+
+ss/s28/archive-hotfix
+
+
+
+
+./vendor/bin/codecept run acceptance tests/acceptance/ItemCest.php
+
+./vendor/bin/codecept run acceptance tests/acceptance/Authoring/Download/InItem/ItemApproverCanDownloadCest.php:ItemApproverCanDownloadArchived
+
+./vendor/bin/codecept run acceptance tests/acceptance/Authoring/Download/InPaper/PaperApproverCanDownloadCest.php:PaperApproverCanDownloadArchived
+
+./vendor/bin/codecept run acceptance tests/acceptance/Authoring/Variants/DifferentABSettings/ItemApproverCantDownloadWhenDownloadRoleNotSetCest.php:ItemApproverCantDownloadArchivedWhenDownloadRoleNotSet
+./vendor/bin/codecept run acceptance tests/acceptance/Authoring/Variants/DifferentABSettings/PaperApproverCantDownloadWhenDownloadRoleNotSetCest.php:PaperApproverCantDownloadArchivedWhenDownloadRoleNotSet
+
+./vendor/bin/codecept run acceptance tests/acceptance/Authoring/Duplicate/InItem/ItemApproverCantSeeDuplicateButtonCest.php:ItemApproverInReadonlyItemDontSeeDuplicateArchivedButton
+
+$result['updated_at']->toDateTime()->getTimestamp()
+
+
+steps: [...steps],
+
+
+./vendor/bin/codecept run acceptance tests/acceptance/Authoring/Duplicate/ReplaceItem/UserCantReplaceItemDuplicateInApprovedPaperCest.php
+
+
+./vendor/bin/codecept run acceptance tests/acceptance/Authoring/Duplicate/ReplaceItem/UserCantReplaceItemDuplicateInPretestPaperCest.php
+
+./vendor/bin/codecept run acceptance tests/acceptance/Authoring/Duplicate/ReplaceItem/UserCantReplaceItemDuplicateInArchivePaperCest.php
+
+./vendor/bin/codecept run acceptance tests/acceptance/Authoring/Duplicate/ReplaceItem/UserCantReplaceItemDuplicateInRejectedPaperCest.php
+
+WhiskersOnKittens1993!
+**********************
+
+
+/var/www/grademaker/resources/views/pages/authoring.blade.php
+
+
+searchStatusTypes
+
+submitSearch
+
+
+
+console.log($scope.searchStatusTypes);
+
+const checkFilterStatus = arr => arr.filter(v => v.value >= 'Archived').length == 1;
+
+if (checkFilterStatus($scope.searchStatusTypes)) {
+  url = url+'&status=Archived';
+}
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+MF/S30/default_paper_workflow
+ss/s30/default_paper_workflow
+feature/workflow_templates
+
+Take a paper in draft and move it along using the api endpoints.
+Check current files for functionality and copy it over.
+
+Workflow paper actions:
+SubmitToReviewAction - Done
+TransferAction - Done
+
+AuthorStep - add author transfer - Done
+
+Sort out multi paper transfer: - Done
+ItemTransferController
+PaperTransferController
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+
+
+
+draft or change - ng Controller function to check for status
+
+
+<div ng-repeat="errorArray in errors track by $index">
+    <div class="gm-list-item" ng-repeat="error in errorArray track by $index">
+        @{{ error }}
+    </div>
+</div>	
+
+"intro" => "Cyn i chi gyflwyno'r eitem hon i gael ei hadolygu, cwblhewch y meysydd canlynol:",
+
+$2y$10$mTqYXdrbVnh2k0vVBMFTcut9MtANO9Luv7BysGo44KfTRbOcM19aS
+
+
+lppaperapprover@grademaker.com
+
+
+#45, #56
+
+_checkPaperItemsStatus
+
+No validation check modal displayed when submitting a paper to 
+DONE - typesetting
+DONE - pre-test
+DONE - exam ready 
+DONE - archive 
+DONE - but on attempting to continue the process and send it to any of these states get 500 error
+
+when there are items in the paper of status 
+DONE - draft 
+DONE - change
+DONE - review 
+
+- contains_archived_items ??? not seemed to be used
+
+
+
+Send paper to archive validation checks not in place - modals not shown
+"Some of the items in this paper are in multiple papers so only the paper will be archived.", 
+"Some of the items in this paper are still in draft so the paper cannot be archived.", 
+"Some of the assets in this paper are not approved. You cannot set the paper to archive until they are approved."
+
+
+
+<Acl has={DIGITISING_AB}
+    otherwiseRender={() => (<span>Access denied!</span>)}
+>
+  <div className="col text-center workflow-custom-select">
+    <select
+      id="end-status"
+      value={props.template.endStatus}
+      onChange={event => props.handleEditStep(event, 'select', 'endStatus')}
+    >{ props.statusList.map((option, i) =>
+      <option key={i} value={option.value}>{option.label}</option>)}
+    </select>
+  </div>
+</Acl>
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+ss/s31/#167170737
+
+DONE - Author > Create > Paper > APC - Items aren't being added to paper - Permissions issue due to user being paper setter only.
+DONE - As a Central Admin/TOPSAdmin using a workflow template in manage, I'm still redirected back to workflow templates instead of the APC generator when I select Go to generator on step 3
+DONE - You can access the APC via the Author menu in the top nav, where you can create a new generator, if you do this then you'll be creating a paper the old way and not using a template (as mentioned, adding here since we don't have a story for this and needs to be discussed with Jim)
+DONE - existing generators need to use default workflow templates
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+ss/s31/#167917988
+
+- Check that are draft items in the paper
+- Display checkbox: Also, submit all my draft items in this paper to review.
+- If an item fails validation to be sent to review display under the checkbox
+The following items are not valid so will not be sent to review with the paper:
+- Submit the paper move the relevant item to review in WT
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+selectedAction.params.includeItems = $scope.includeItems;
+
+
+
+
+mongodump -h localhost:27017 -d gm_pre -o local_$(date +%Y-%m-%d)
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+Item approver / Typesetter / TOPS Admin
+
+Edit Item in the item bank 
+AND
+it is in one or more papers all of status exam ready / archive
+
+New dialog box
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
