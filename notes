@@ -913,21 +913,269 @@ The following items are not valid so will not be sent to review with the paper:
 selectedAction.params.includeItems = $scope.includeItems;
 
 
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
 
+
+ss/s32/#167565796
+
+Item approver / Typesetter / TOPS Admin
+
+Change the version number to the next major (x.0) version number if it is not a major version already
+
+Create a new x.1 version of the item
+
+Change the references to the item in the paper(s) to point to the x.0 version in the item_versions collection
+
+Set the usage on the item for that paper to type = "version"
+
+AND I am left viewing the latest version of the item in edit view
+
+
+---------------------------
+
+Test issues:
+
+DONE - 1 Examready paper - version modal as expected and everything seems to work
+DONE - 1 Archive paper - version modal not shown
+DONE - 2 Examready papers - no version modal
+DONE - 1 Examready that already have version of item + 1 Examready that do not have version - no version modal
+
+Bug:
+
+When I already have created version of an item for an examready paper 
+and the item is now in a second examready paper - 
+when I edit the item again, current version is set for both old and newer paper. 
+Older paper should remain unthouched.
+
+
+Also, I noticed a bit later when I tried to edit the item again that I got the version question in the modal. 
+If all papers that the item is in already have a version, then I should be free to edit the item. 
+Note that I only saw this for an item that was in 2 exam ready papers.
+
+
+http://local.grademaker.com/author/paper/5d88994d3bd29820ec4fba14
+http://local.grademaker.com/author/paper/5d88998c3bd29838d734a327
+
+http://local.grademaker.com/author/item/5d8898de3bd2982558678a04
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+ss/s32/#168663840
 
 mongodump -h localhost:27017 -d gm_pre -o local_$(date +%Y-%m-%d)
 
 
+Issue:
+When sending a paper to pretest, current version of all items in that paper 
+should be fixed to that paper and all items should get a newer version.
+
+Steps to reproduce
+Create a paper and make sure it has items in state pretest and approved.
+Check what version the items have.
+Send paper to pretest
+
+Expected outcome:
+A full version of each item (x.0) is created (if not already existing) and "glued" to the pretest paper.
+A new minor version (x.1) version is created
+
+When I click on binoculars in the paper, I see the x.0 version of the item with some green text at the top.
+
+Actual outcome:
+
+No new version of the item is created
+
+When I click on binoculars in the paper, I see the latest version of the paper and no green stuff at the top.
+
+
+
+
+
+
+http://local.grademaker.com/author/paper/584685e8cc616ea9334c3c7f
+
+
+if (typeof item.is_valid !== 'undefined' && item.is_valid === true) {
+$scope.itemsForReview.valid.push(item.workflow_id);
+} else {
+$scope.itemsForReview.invalid.push(item.title);
+}
+
+"{{ 
+	(
+		\Route::currentRouteName() == 'view_archive_item' ? '/archive' : '/author' 
+	).'/item/'. $item['id']  . 
+	(
+		!empty($item['version']) ? '/version/' . $item['version']
+	: '') }}{{ $hash ?? $ref }}"
+
+
 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
 
 
-Item approver / Typesetter / TOPS Admin
+https://www.pivotaltracker.com/story/show/168634016
 
-Edit Item in the item bank 
-AND
-it is in one or more papers all of status exam ready / archive
 
-New dialog box
+paper was still in Draft
+DONE - item that had been transferred to other user had been sent to next step. This should only affect my own items
+DONE - today I noticed that item that was in review when paper was submitted were changed to reviewed. Seems like all items are pushed to next step when paper is submitted.
 
 
 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+https://www.pivotaltracker.com/n/projects/1319040/stories/168514896
+ss/s33/#168514896
+
+
+Info tab:
+Paper
+DONE - custom mandatory fields
+
+Item
+DONE - custom mandatory fields
+DONE - blooms taxonomy
+DONE - syllabus tab
+DONE - mark scheme type
+DONE - mcq answer mark scheme
+DONE - short answer mark scheme
+DONE - extended answer mark scheme
+DONE - fill in blank answer mark scheme
+DONE - drag & drop answer mark scheme
+DONE - fother answer mark scheme
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+https://www.pivotaltracker.com/story/show/169202894
+ss/s35/#169202894
+
+DONE - Pass all the data from angular to React using local storage
+DONE - Open the React popup from Angular
+DONE - Move generate papers functionality from Angular to React
+DONE - Attach the workflow to the generated Paper and not the generator
+DONE - Remove current workflow functionality from APC - jen/apc/remove-wft
+DONE - Workflow template Step 2 overflow issue
+DONE - Add selected users from the frontend to backend
+DONE - Remove Step 1 from Create paper wizard
+DONE - Migration to remove workflow from existing generators - GMC/S35/#169202894_migration
+DONE - Workflow templare selection validation
+DONE - IF AB admin add private workflows to step 2 dropdown
+DONE - User selection validation
+
+Liz:
+
+DONE - Can generate papers with missing mandatory users - if steps with red crosses exist and you select generate then you should get a validation message: 'Nominated users are mandatory for the setter/reviewer role'
+
+DONE - Cannot test this as a paper setter as the 'Workflow template' drop down is missing (see screenshot) - this is fine for TOPSAdmin/Central Admin
+
+DONE - As a TOPSAdmin/Central admin I'm unable to 'Use' any of the paper templates accessed from Manage > Workflows with error in the console: 'createPaper.min.js?v=969:53 Uncaught ReferenceError: setPaperTemplateUse is not defined'
+
+DONE - When AB has no workflow templates and it uses the default WT, you cannot continue as the Generate papers button is greyed out - like the screenshot from the first issue.
+
+DONE - Validation modal is missing when select generate and any of the following is missing: paper name/no. of items to generate/paper versions/search description, with error in console: 'TypeError: Cannot read property 'push' of undefined'
+
+DONE - Validation message now shown when selecting generate when there is missing mandatory users, but the message duplicates each time Generate is selected, and only one error is shown when both setter and reviewer is missing - see screenshot
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+https://www.pivotaltracker.com/story/show/169644125
+ss/s36/#169644125
+
+AddNote.js - you can pass the edit there and sort out the permissions for update, permissions to update have been disabled in 35
+
+
+
+DONE - When I view a note I wrote for the item / paper on the current workflow step that has no comments then there is a blue 15px 'edit pencil' on the RHS of the header next to the date
+
+When I click on the edit pencil then I am shown the Add note interface but with the content of the note to edit
+
+When I click save then the changes to the note are made with a new datestamp
+
+onUpdateCommentClick
+
+
+case ActionTypes.UPDATE_NOTE_FAIL:
+case ActionTypes.ADD_NOTE_REPLY_FAIL:
+case ActionTypes.UPDATE_NOTE_REPLY_FAIL:
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+ss/s36/#167515167
+
+APC branch:
+ss/s35/#169202894
+
+LP item - Science/AS- R - A - Pre-test
+
+Item approver only!!!!
+\Log::debug(\GmAuth::permissions());
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+@if(\Auth::user()->hasRoles(['AB_ITEM_APPROVER']))
+    <input type="hidden" name="approver_edit" value="1"/>
+@endif
+
+
+
+<Route path="/author/paper/edit/" component={DuplicatePaperSelectWorkflow} />
+
+
+
+
+Sort out getWorkflowTemplateSteps in paper generator
+
+
+use admin
+db.createUser(
+  {
+    user: "mongo_user",
+    pwd: "mz$Ww9s74^ez",
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" }, "readWriteAnyDatabase" ]
+  }
+)
+
+
+mongo --port 27017  --authenticationDatabase "admin" -u "mongo_user" -p
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+ss/s36/#167648173
+ss/s36/#167515167
+
+DONE - Selection is inverted if while selecting the workflow is cancelled.
+DONE - Paper is not being duplicated (by selecting new wt) on Special and Full
+DONE - If Items and Papers are selected to change workflow, dialogbox gets out of screen
+DONE - Font size issue on duplicate item in view item
+DONE - Can continue without selecting mandatory users on the WT
+DONE - Item in review : react-dom.development.js:55 Target container is not a DOM element
+DONE - Item WT dropdown missing from paper duplication
+DONE - QA forms not attached to duplicated Item if there is a qaform already on the workflow
+DONE - No confirmation message after item duplication has been sucessful
+DONE - WT lists for item / paper duplication should be filtered by the SQ of the item / paper
+
+---------------------
+
+DONE - Move notes and duplicate to using the new error => error for api promise
+DONE - Jen - Add advance option to papers similar to items and move the workflow templates in there
+DONE - Issue when changing template for items in a paper when you are a paper setter only - hide the option for items for any user that does not have item setter or item approver roles
+DONE - Graham - When an AB has workflow templates enabled but the SQ does not have any template the option to change workflow is still there
+DONE - Graham - Duplicating papers shows me to select the workflow template, and then keeps spinning. When duplicating one works, one shows the wt and fails, one works, one fails, and so on.
+DONE - For a subject qualification with only one template for item and one for paper, when I try to duplicate paper and un-tick boxes to keep current template, duplication breaks
+DONE- Nick - Investigate missing workflow templates names.
+
+Set current item/paper workflow template when the user selects to change the paper/item workflow template
+this.props.item.presetTemplate
+
+ss/s36/#167648173
