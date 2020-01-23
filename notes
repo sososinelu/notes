@@ -1179,3 +1179,73 @@ Set current item/paper workflow template when the user selects to change the pap
 this.props.item.presetTemplate
 
 ss/s36/#167648173
+
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+ss/s38/#169980530
+https://www.pivotaltracker.com/story/show/169980530
+
+DONE - 1.The Request changes and Reject buttons (in approve modal) and Recommend approve, change, reject (in review modal) are missing the icons - just showing weird rectangles at the moment
+
+DEV - 2.If the paper cannot be submitted, then the other messages below should not be shown. Only if the paper can be sent (If the item criteria are all met), should the warnings be shown, for example, when sending to exam ready the following shows, but it should only be top part.
+The paper cannot be set as exam ready because:
+At least one of the items in the paper is either draft, waiting for a change or waiting to be reviewed.
+At least one asset in the paper is not approved.
+Please check your items before trying to send the paper to exam ready.
+The paper has assets that are not copyright cleared. Are you sure you want to set the paper as Exam Ready.
+Example: https://dev.grademaker.com/author/paper/5e21cd777f856f5f7d473494
+UPDATE 23/01: Confirmed with Jim and Sorin that errors and warning will show in the modal at the same time, BUT if there are errors then the text Are you sure you want to... will be hidden, and if there are no errors, then that text will be shown, along with the enabled submit buttons.
+
+DEV - 3.If a paper contains items that have notes that need to be actioned in that step, or a QA form that needs to be completed, these are missing from the The paper cannot be set as... because: list
+Example: https://dev.grademaker.com/author/paper/5e21cd777f856f5f7d473494
+Note that needs marking as complete: Item 10 (LP approver modal - Note not marked as complete)
+QA form that needs completing: Item 11 (LP Approver modal - Mandatory QA form for approver (item))
+UPDATE: This QA form/Note error is only needed for when reviewed items are being moved on/status is being changed with the paper, i.e. paper being sent to pre-test and exam ready and if items included when sending to archive. This isn't needed when sending paper to typesetting because item states don't change.
+
+DONE - GM - 4.If you close the modal and re-open it the message below 'The paper cannot be set as... because:' is missing (see screenshot)
+
+DONE - GM - 5.Language strings showing in ITEM approver modal - item.errors_title.send_to_item_bank, item.errors_footer.send_to_item_bank (https://dev.grademaker.com/author/item/5e21d82c7f856f6a1d040dd4) (see screenshot)
+
+DONE - GM - 6.Amend the wording when sending a paper to exam ready - it reads as All items not in the item bank or achieved will be sent to the item bank when the paper is set to exam ready. - change achieved to archived
+Example: https://dev.grademaker.com/author/paper/5e2846ff7f856f1e5d0b29c9
+
+DONE - GM - 7.If a paper contains a mandatory QA form or a note, the validation for this should be shown before the modal can be opened rather than in the modal - see in #170572503:
+The only validation done before the dialog is shown should be making sure the paper is valid:
+Mandatory fields completed
+QA forms completed
+Actionable notes for the step actioned
+(This is different to items - if any items in the paper contain the above then this is included in the approver modal)
+
+DONE - GM - 8.Language strings showing in ITEM approver modal - item.errors_title.send_to_item_bank, item.errors_footer.send_to_item_bank (https://dev.grademaker.com/author/item/5e21d82c7f856f6a1d040dd4) (see screenshot)
+
+DEV - GM - 9.When sending an ITEM to pre-test the wrong message is shown in the modal - the message refers to items as though it is a paper. No message is needed here. Example: https://dev.grademaker.com/author/item/5e2849ef7f856f22531f9484#/mapping (See screenshot)
+
+DONE - GM - 10. Can you amend the 'Send to' drop down option of 'Set as exam ready' to just show exam ready - it was like this previously (this morning as part of Nicks story). Example in LPAB1: https://dev.grademaker.com/author/paper/5e2851ce7f856f2b405dacfb
+
+DEV - GM - 11. When sending a paper to pre-test it incorrectly identifies a reviewed item as preventing the paper from being able to sent to pre-test, as returns the message 'At least one of the items in the paper is either draft, waiting for a change or waiting to be reviewed.', see: https://dev.grademaker.com/author/paper/5e2859977f856f315e7629a7 - it should return the message 'All non approved items will be be set as pre-test when the paper is set to pre-test' if paper contains reviewed items.
+
+DEV - 12.The send to archive modal duplicates the errors - See screenshot - only text in box 2 needed,
+
+DEV - 13. The send to archive modal is missing the warning for Items are in more than one paper The other items will be send to the archive. See https://dev.grademaker.com/author/paper/5e21cfad7f856f628e537454 - item 10 is is multiple papers.
+
+DEV - GM - 14. The copyright message in the send to pre-test modal refers to typesetting Amend the send to pre-test message from Warning: The paper includes assets that are not copyright cleared. You can continue sending the paper to typesetting or cancel and check the copyright of any assets. to read The paper has assets that are not copyright cleared. Are you sure you want to send the paper to pre-test - see screenshot (https://dev.grademaker.com/author/paper/5e21d0027f856f5f6a118490)
+
+GM - 15. The copyright message in the send to typesetting modal needs amending from Warning: The paper includes assets that are not copyright cleared. You can continue sending the paper to typesetting or cancel and check the copyright of any assets. to * The paper has assets that are not copyright cleared. (https://dev.grademaker.com/author/paper/5e21cdf17f856f5f6958b7e5)
+
+16. Remove Are you sure you want to send the paper to typesetting? from the send to typesetting modal, and add to the bottom of the messages (https://dev.grademaker.com/author/paper/5e21cdf17f856f5f6958b7e5)
+
+GM - 17. When not using a custom workflow template, and there is a drop down to select the end status, the text is shown above the drop down - please can you amend so text is below the drop down? (See screenshot) - For both items and papers
+
+GM - 18. TBC as to whether we need the text You are sending the paper to typesetting/You are sending this paper to archive and for items The item will be moved to the Item Bank/You are sending this item to archive. You may wish to provide a reason. Have asked Jim. Not mentioned in story and seems unnecessary
+
+**19.** In ITEM approver modal, when the item contains asset not approved AND asset not copyright cleared both these messages show together in red below 'The item cannot be sent to the item bank because:', even though one is a something preventing you from submitting (asset not approved), and the other is just a warning (copyright) - Jim confirmed "Agree, just need a sentence between the error and warning messages. So if the warning message is shown something like "Please check the item before sending it to archive""
+Example: https://dev.grademaker.com/author/item/5e21d82c7f856f6a1d040dd4
+
+DONE - GM - **20.** @grahammccann sorry for not spotting this yesterday but the fix that was done for issue 4, also needs to be done for items - reset the selection back to nothing when closing and re-opening approver modal for items.
+
+
+
+
+Bulk item actions on paper approver dialog
