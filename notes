@@ -1336,13 +1336,12 @@ app/Lib/Export/PrintReady
 
 epic/typefi
 ss/cxml
-ss/typefi-controller
+ss/cxml-temp
+ss/print-ready/83
+ss/demo
 
-- understand how the generator works
-- identify where do I need to add my code changes
-- load an hard coded html string in the converter
-- understand how to convert html to xml with de Dom Document/element
 
+Test paper workflow: 5f59d416ecba8900e25cc764
 
 
 -----------
@@ -1356,49 +1355,31 @@ PaperWrapper.php
 ItemWrapper.php
 
 
+
 ------------
 
+Run tests:
+
+composer test tests/Unit/Lib/PrintReady/Typefi
 
 
 
-Week 19/10 show and tell about what needs to be done to add a new item type
+
+
+svs/s51/#175269995
+DONE - In edit more when you switch tabs the switch turns off
+- switch needs to be enabled by default
 
 
 
-Wrap up the HTML converter
-
-HTML converter unit tests
 
 
+- Mention the PrintReadyTest1 AB
 
-Static styles in config
+http://local.grademaker.com/cxml/5f59d416ecba8900e25cc764
 
-Styles generated on the fly (e.g. add levels)
+PrintReadyTest1
 
-Styles unit tests
+Export and Preview controllers
 
-
-
-Download controller - backend / extend current functionality to include print ready
-
-Hooking the Download controller with the queue
-
-Add a debug route which can be run only by admins and based on app debug from env for testing CXML without running the queue, document in readme the URL.
-
-
-
-Scafolds existing components in the codebase without functionality in them.
-Return a p element with a text.
-content block
-section break
-extended answer
-short answer
-page breaks
-mcq
-
-Test the generator with various basic papers.
-
-
-
-Update readme
-
+js/s51/16
