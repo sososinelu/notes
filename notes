@@ -1383,3 +1383,37 @@ PrintReadyTest1
 Export and Preview controllers
 
 js/s51/16
+
+
+
+
+- Add 'soft' page break on paper edit
+
+https://dev.grademaker.com/author/paper/603f8702abbf6b58957ed566
+
+
+http://local.grademaker.com/author/paper/603f8702abbf6b58957ed566
+
+
+ss/s57/134-3
+
+js/s57/134
+
+- We could fetch them in the paperConstructionController, save them to scope and pass the array to the directive 
+
+-Page breaks
+I observe that you have <p type="page_break"></p> (which doesn't do anything at all) and in some instances a break attribute a style within a <p> which theoretically works. Please use primarily the break tag, so <break type="page" />
+
+
+
+Typefi: create ticket
+
+CXC template
+
+- front page
+- content pages
+- waiting for PDF/inDesign from Jim
+- outside of the contract
+
+
+
