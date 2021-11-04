@@ -1363,57 +1363,248 @@ Run tests:
 composer test tests/Unit/Lib/PrintReady/Typefi
 
 
+TODO:
+- add FontAwesome PRO
+
+Tickets:
+- page border
+
+
+Soft page break:
+
+ss/s58/134
+
+https://dev.grademaker.com/author/paper/60702751e2179e2ed016647c
+
+https://www.youtube.com/watch?v=sm9BZbztvEc
+
+https://www.udemy.com/course/react-the-complete-guide-incl-redux/learn/lecture/8091064#overview
 
 
 
-svs/s51/#175269995
-DONE - In edit more when you switch tabs the switch turns off
-- switch needs to be enabled by default
+db.getCollection('papers').find({$or: [{'items.type' : 'page_break'}, {'items.type' : 'section_break'}]})
+
+
+
+QTI
+Stories: 765, 850
+
+
+https://grademaker-test.inspera.com/
+https://webapps.ph.ed.ac.uk/qtiworks/anonymous/validator
+
+Inspera:
+ssecan / eess.psil5MEAB_kor
+
+
+BTL test link:
+https://grademaker-test.inspera.com/player?context=preview&contentItemId=3232198&selectedLanguageId=2#/section/6413364397718/question/3232137
+
+Non BTL link:
+https://grademaker-test.inspera.com/player?context=preview&contentItemId=3238087&selectedLanguageId=2#/section/3123963911135/question/3238082
+
+Test paper:
+http://local.grademaker.com/author/paper/6061e7a29da32b0c83575c59 
+
+- Upper bound is 0 - should be to total mark for the question
+- <mediainteraction needs to wrap all audio/video media objects
+- <mediainteraction tag cannot be within a <p> tag
+- the mime type needs to be extracted from the file type and applied, atm is set word doc for everything
 
 
 
 
+https://dev.grademaker.com/author/paper/60a3c5d36596f556787fad2a
 
-- Mention the PrintReadyTest1 AB
+-------------------------------------
 
-http://local.grademaker.com/cxml/5f59d416ecba8900e25cc764
+Proofs tab
+svs/s58/1110
+https://dev.azure.com/GradeMaker/GradeMaker%20Pro/_workitems/edit/1110
 
-PrintReadyTest1
-
-Export and Preview controllers
-
-js/s51/16
-
-
+Typeset paper
+http://local.grademaker.com/author/paper/60d9a175b6be3529894c6a67
 
 
-- Add 'soft' page break on paper edit
-
-https://dev.grademaker.com/author/paper/603f8702abbf6b58957ed566
-
-
-http://local.grademaker.com/author/paper/603f8702abbf6b58957ed566
-
-
-ss/s57/134-3
-
-js/s57/134
-
-- We could fetch them in the paperConstructionController, save them to scope and pass the array to the directive 
-
--Page breaks
-I observe that you have <p type="page_break"></p> (which doesn't do anything at all) and in some instances a break attribute a style within a <p> which theoretically works. Please use primarily the break tag, so <break type="page" />
+Exam ready paper
+http://local.grademaker.com/author/paper/60d9a3511b35512d837278e2
 
 
 
-Typefi: create ticket
+-----------------------------
 
-CXC template
+Tidy up preview tab
+https://dev.azure.com/GradeMaker/GradeMaker%20Pro/_sprints/taskboard/GradeMaker%20Pro%20Team/GradeMaker%20Pro/Sprint%2059?workitem=652
 
-- front page
-- content pages
-- waiting for PDF/inDesign from Jim
-- outside of the contract
+svs/s59/652
 
+
+Marks migrations:
+
+php artisan migrate --path=/database/migrations/2021_03_01_111105_copy_max_mark_to_core_marks.php
+php artisan migrate --path=/database/migrations/2021_07_05_120851_copy_max_mark_to_core_mark_when_no_additional_marks.php
+php artisan migrate --path=/database/migrations/2021_07_06_160643_item_version_max_mark_to_core_mark_pt_1.php
+php artisan migrate --path=/database/migrations/2021_07_06_160648_item_version_max_mark_to_core_mark_pt_2.php
+
+
+
+
+06/07/2021
+DONE - deploy S59 to dev server (don\'t do any migrations)
+DONE - tunelling to typefi for Nick
+DONE - tunelling to typefi for Jelena
+DONE - tunelling to typefi for Joe S
+- tunelling to typefi for J Bennet
+- QTI tickets
+- S59 tickets
+
+
+
+Typefi server local setup:
+- public ssh key added to the AWS parameter store
+- add/update details in your env file
+
+APP_ENV=local 
+
+# Typefi server hostname and basic auth credentials
+TYPEFI_SERVER_HOSTNAME=https://localhost:8080/
+TYPEFI_SERVER_AUTH_USERNAME=<email>
+TYPEFI_SERVER_AUTH_PASSWORD=<pass>
+
+# Typefi tunnel hostname for accessing the server via a local connection
+TYPEFI_SERVER_TUNNEL_HOSTNAME=qa4n660dc8.execute-api.eu-west-1.amazonaws.com
+
+# Typefi server workflow name (used for selecting workflows on the typefi server)
+TYPEFI_SERVER_WORKFLOW="print ready - dev"
+
+- clear env cache > php artisan optimize:clear
+
+
+- Tunnel to the typefi server
+ssh -L 0.0.0.0:8080:qa4n660dc8.execute-api.eu-west-1.amazonaws.com:443 -i  ~/.ssh/work_rsa ssecan@54.76.140.196
+
+- Run the typefi paper generation command
+php artisan print-ready:run
+
+
+
+
+Tunnel for jenkins:
+ssh -L 8081:10.2.2.57:8080 -i ~/.ssh/work_rsa ssecan@54.76.140.196
+
+
+
+systemctl status apc_runner.service
+
+systemctl status print_ready_runner.service
+
+
+
+
+/ Dev path for dumps    
+/mnt/extra/dev_dump
+
+
+
+
+ItemVersion::flushEventListeners();
+$query = ItemVersion::timeout(60000)
+    ->whereRaw([
+        'composite_item' => [
+            '$elemMatch' => [
+                'additional_marks' => [
+                    '$in' => [[], null]
+                ]
+            ],
+        ],
+    ]);
+$total = $query->count();
+$progress = 0;
+
+
+
+db.getCollection('workflows').find({ type: 'paper', steps: { $exists: true, $eq: [] } })
+
+
+
+db.getCollection('workflows').find({ type: {$in: ['item', 'paper']}, status: 'Draft',  $or: [ {steps: { $eq: [] }}, {steps: null} ] })
+
+
+db.getCollection('workflows').find({ type: {$in: ['item', 'paper']}, status: 'Draft',  $or: [ {steps: { $eq: [] }}, {steps: null} ] }).count()
+
+3601
+
+
+TODO:
+
+- add font awesome PRO
+
+
+
+
+ssh -L 2022:10.2.2.57:22 -i ~/.ssh/work_rsa ssecan@54.76.140.196
+
+
+Jenkins server:
+build scripts
+new_world.terraform is being called from Jenkins as an entry point for creating the server
+
+
+jobs
+Change env variables
+/var/lib/jenkins/jobs/development/app_config
+workspace
+
+
+
+SSH into Jenkins VPN for sserver > SSH  
+ssh -p 2022 -i ~/.ssh/work_rsa ubuntu@localhost
+
+ssh -L 8181:10.2.2.57:8080 -L 2022:10.2.2.57:22  -L 8282:qa4n660dc8.execute-api.eu-west-1.amazonaws.com:443 -i ~/.ssh/work_rsa ssecan@54.76.140.196
+
+
+
+
+             keyMap[property].stats
+              ? translateService.get(
+                  'authoring.advanced_search.latest_values'
+                ) + ' '
+              : ''
+
+
+----------------------------------------------------------------------------------------------------------------------------
+
+10.1.0.6 - - [21/Oct/2021:08:04:49 +0000] "GET /js/login.min.js?v=450 HTTP/1.1" 200 47289 "https://dev.grademaker.com/auth/login?timeout=true" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36" "90.242.174.99" 0.000 - .
+
+
+
+10.1.1.73 - - [21/Oct/2021:08:07:23 +0000] "POST / HTTP/1.1" 404 3522 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36" "165.232.86.149" 0.420 0.420 .
+
+
+10.1.1.73 - - [21/Oct/2021:08:18:55 +0000] "POST /api/v1/user/login?awardingbody_id=56f1321fcc616ec31b3c6d0b HTTP/1.1" 404 54 "https://dev.grademaker.com/auth/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36" "92.233.49.149" 0.165 0.168 .
+
+
+Bad hostname provided.
+
+
+\Symfony\Component\HttpFoundation\Request::getHost
+
+----------------------------------------------------------------------------------------------------------------------------
+
+https://dev.azure.com/GradeMaker/GradeMaker%20Pro/_workitems/edit/1349
+
+RO/S63/1349_React
+
+svs/s63/epic_1349
+
+svs/s63/1638
+
+
+
+Tasks:
+- displays validation errors
+- dispoatch redux actions
+- ItemDataDetailsModal , ItemDataDetailsPaperRow and ItemDataDetailsDataCell
+using invalid prop types (objects, arrays), declaring default props for required props, not using dot notation, wrapping string props with {} , unused imports, unused variables/contants, constants already declared in upper scope and unnneccessary else's.
 
 
