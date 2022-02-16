@@ -1574,37 +1574,66 @@ ssh -L 8181:10.2.2.57:8080 -L 2022:10.2.2.57:22  -L 8282:qa4n660dc8.execute-api.
 
 ----------------------------------------------------------------------------------------------------------------------------
 
-10.1.0.6 - - [21/Oct/2021:08:04:49 +0000] "GET /js/login.min.js?v=450 HTTP/1.1" 200 47289 "https://dev.grademaker.com/auth/login?timeout=true" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36" "90.242.174.99" 0.000 - .
+
+Short the needles
+Remove wire/re attach if cuts in
+Pluck pads underneath
+
+
+TEST paper
+
+LP AB3
+https://dev.grademaker.com/author/paper/61d5719e3a4b2b468e09f132
+
+ISEB: rev106 
+Iseb_Main, Iseb_CandidateInfo, Iseb_Other
+
+WJEC: rev103 
+Wjec_Main
+
+CXC: rev102 
+Cxc_Main
+
+AQA: rev102 
+Aqa_Main
+
+Grademaker: rev103 
+Cover
+
+TODO:
+DONE - Bug 1833
+DONE - Move JS file for Pernilla
+Install the Typefi designer plugins from the FTP
+
+
+https://www.britishcanoeing.org.uk/uploads/documents/Wye_Challenge_Route.pdf
+
+
+------------------------------------------------------------------------------------------
+
+Support:
+test the bug on dev > create the bug on azure and assign to sprint
+Change the status of the ticket on freshdesk to Bug waiting to release
 
 
 
-10.1.1.73 - - [21/Oct/2021:08:07:23 +0000] "POST / HTTP/1.1" 404 3522 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.129 Safari/537.36" "165.232.86.149" 0.420 0.420 .
+If you need to look at the data:
+Refresh staging with most recent backup
+
+./production_backup.py --adhoc
 
 
-10.1.1.73 - - [21/Oct/2021:08:18:55 +0000] "POST /api/v1/user/login?awardingbody_id=56f1321fcc616ec31b3c6d0b HTTP/1.1" 404 54 "https://dev.grademaker.com/auth/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36" "92.233.49.149" 0.165 0.168 .
-
-
-Bad hostname provided.
-
-
-\Symfony\Component\HttpFoundation\Request::getHost
-
-----------------------------------------------------------------------------------------------------------------------------
-
-https://dev.azure.com/GradeMaker/GradeMaker%20Pro/_workitems/edit/1349
-
-RO/S63/1349_React
-
-svs/s63/epic_1349
-
-svs/s63/1638
+./staging_restore.adhoc.py
 
 
 
-Tasks:
-- displays validation errors
-- dispoatch redux actions
-- ItemDataDetailsModal , ItemDataDetailsPaperRow and ItemDataDetailsDataCell
-using invalid prop types (objects, arrays), declaring default props for required props, not using dot notation, wrapping string props with {} , unused imports, unused variables/contants, constants already declared in upper scope and unnneccessary else's.
+Staging DB
+ssecan / ncBF1os09vt3V3xK
 
 
+Stuck papers:
+actionable notes
+
+Typefi server admin
+admin
+LICT!hooc7spos4jegh
